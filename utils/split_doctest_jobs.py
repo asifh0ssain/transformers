@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
         # not to run files in `src/` for now as it is completely broken at this moment. See issues/39159 and
         # https://github.com/huggingface/transformers/actions/runs/15988670157
-        # TODO (ydshieh): fix the error, ideally before 2025/09
+        # TODO (ydshieh): fix the error
         if file_dir.startswith("src/"):
             continue
 
@@ -74,7 +74,9 @@ if __name__ == "__main__":
             for file in raw_test_collection_map[file_dir]:
                 refined_test_collection_map[file] = file
         else:
-            refined_test_collection_map[file_dir] = " ".join(sorted(raw_test_collection_map[file_dir]))
+            refined_test_collection_map[file_dir] = " ".join(
+                sorted(raw_test_collection_map[file_dir])
+            )
 
     sorted_file_dirs = sorted(refined_test_collection_map.keys())
 
@@ -89,7 +91,9 @@ if __name__ == "__main__":
     end = 0
     for idx in range(args.num_splits):
         start = end
-        end = start + num_jobs_per_splits + (1 if idx < num_jobs % args.num_splits else 0)
+        end = (
+            start + num_jobs_per_splits + (1 if idx < num_jobs % args.num_splits else 0)
+        )
         file_directory_splits.append(sorted_file_dirs[start:end])
 
     if args.only_return_keys:
